@@ -190,8 +190,7 @@ open class EasyTipView: UIView {
         public struct Positioning {
             public var bubbleHInset         = CGFloat(1)
             public var bubbleVInset         = CGFloat(1)
-            public var textHInset           = CGFloat(10)
-            public var textVInset           = CGFloat(10)
+            public var textInsets           = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
             public var maxWidth             = CGFloat(200)
         }
         
@@ -267,7 +266,10 @@ open class EasyTipView: UIView {
         
         [unowned self] in
         
-        var contentSize = CGSize(width: self.textSize.width + self.preferences.positioning.textHInset * 2 + self.preferences.positioning.bubbleHInset * 2, height: self.textSize.height + self.preferences.positioning.textVInset * 2 + self.preferences.positioning.bubbleVInset * 2 + self.preferences.drawing.arrowHeight)
+        var contentSize =
+            CGSize(
+            width: self.textSize.width + self.preferences.positioning.textInsets.left + self.preferences.positioning.textInsets.right + self.preferences.positioning.bubbleHInset * 2,
+            height: self.textSize.height + self.preferences.positioning.textInsets.top + self.preferences.positioning.textInsets.bottom + self.preferences.positioning.bubbleVInset * 2 + self.preferences.drawing.arrowHeight)
         
         return contentSize
         }()
@@ -520,8 +522,7 @@ open class EasyTipView: UIView {
         paragraphStyle.lineBreakMode = NSLineBreakMode.byWordWrapping
         
         
-        let textRect = CGRect(x: bubbleFrame.origin.x + (bubbleFrame.size.width - textSize.width) / 2, y: bubbleFrame.origin.y + (bubbleFrame.size.height - textSize.height) / 2, width: textSize.width, height: textSize.height)
-        
+        let textRect = CGRect(x: bubbleFrame.origin.x + preferences.positioning.textInsets.left, y: bubbleFrame.origin.y + preferences.positioning.textInsets.top, width: textSize.width, height: textSize.height)
         
         text.draw(in: textRect, withAttributes: [NSFontAttributeName : preferences.drawing.font, NSForegroundColorAttributeName : preferences.drawing.foregroundColor, NSParagraphStyleAttributeName : paragraphStyle])
     }
