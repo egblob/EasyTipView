@@ -90,16 +90,19 @@ class ViewController: UIViewController, EasyTipViewDelegate {
             
             var preferences = EasyTipView.Preferences()
             preferences.drawing.backgroundColor = UIColor(hue:0.58, saturation:0.1, brightness:1, alpha:1)
-            preferences.drawing.foregroundColor = UIColor.darkGray
-            preferences.drawing.textAlignment = NSTextAlignment.center
-            
+
             preferences.animating.dismissTransform = CGAffineTransform(translationX: 100, y: 0)
             preferences.animating.showInitialTransform = CGAffineTransform(translationX: -100, y: 0)
             preferences.animating.showInitialAlpha = 0
             preferences.animating.showDuration = 1
             preferences.animating.dismissDuration = 1
             
-            let view = EasyTipView(text: "Tip view within the green superview. Tap to dismiss.", preferences: preferences)
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = NSTextAlignment.right
+            paragraphStyle.lineBreakMode = NSLineBreakMode.byWordWrapping
+            let attributedString = NSAttributedString(string: "Tip view within the green superview. Tap to dismiss.", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 12.0), NSForegroundColorAttributeName : UIColor.red, NSParagraphStyleAttributeName : paragraphStyle])
+            let view = EasyTipView(attributedText: attributedString, preferences: preferences)
+
             view.show(forView: buttonA, withinSuperview: self.smallContainerView)
             
         case buttonB:
