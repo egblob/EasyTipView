@@ -364,7 +364,7 @@ open class EasyTipView: UIView {
         self.init(content: .text(text), preferences: preferences, delegate: delegate)
     }
 
-    public init (attributedText: NSAttributedString, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil){
+    public convenience init (attributedText: NSAttributedString, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil){
         self.init(content: .attributedText(attributedText), preferences: preferences, delegate: delegate)
     }
     
