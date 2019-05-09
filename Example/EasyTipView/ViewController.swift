@@ -36,6 +36,7 @@ class ViewController: UIViewController, EasyTipViewDelegate {
     @IBOutlet weak var buttonD: UIButton!
     @IBOutlet weak var buttonE: UIButton!
     @IBOutlet weak var buttonF: UIButton!
+    @IBOutlet weak var buttonG: UIButton!
     
     weak var tipView: EasyTipView?
     
@@ -78,7 +79,13 @@ class ViewController: UIViewController, EasyTipViewDelegate {
             })
         } else {
             let text = "EasyTipView is an easy to use tooltip view. It can point to any UIView or UIBarItem subclasses. Tap the buttons to see other tooltips."
-            let tip = EasyTipView(text: text, delegate: self)
+            
+            var preferences = EasyTipView.globalPreferences
+            preferences.drawing.shadowColor = UIColor.black
+            preferences.drawing.shadowRadius = 2
+            preferences.drawing.shadowOpacity = 0.75
+            
+            let tip = EasyTipView(text: text, preferences: preferences, delegate: self)
             tip.show(forItem: toolbarItem)
             tipView = tip
         }
@@ -100,7 +107,7 @@ class ViewController: UIViewController, EasyTipViewDelegate {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = NSTextAlignment.right
             paragraphStyle.lineBreakMode = NSLineBreakMode.byWordWrapping
-            let attributedString = NSAttributedString(string: "Tip view within the green superview. Tap to dismiss.", attributes: [NSFontAttributeName : UIFont.boldSystemFont(ofSize: 12.0), NSForegroundColorAttributeName : UIColor.red, NSParagraphStyleAttributeName : paragraphStyle])
+            let attributedString = NSAttributedString(string: "Tip view within the green superview. Tap to dismiss.", attributes: [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 12.0), NSAttributedStringKey.foregroundColor : UIColor.red, NSAttributedStringKey.paragraphStyle : paragraphStyle])
             let view = EasyTipView(attributedText: attributedString, preferences: preferences)
 
             view.show(forView: buttonA, withinSuperview: self.smallContainerView)
@@ -180,10 +187,30 @@ class ViewController: UIViewController, EasyTipViewDelegate {
             preferences.animating.dismissOnTap = false
             
             preferences.positioning.maxWidth = 150
-            
+
             let view = EasyTipView(text: "Tip view positioned with the arrow on the left. Tap won't dismiss.", preferences: preferences)
             view.show(forView: buttonF, withinSuperview: self.navigationController?.view!)
             
+        case buttonG:
+            
+            var preferences = EasyTipView.globalPreferences
+            preferences.drawing.backgroundColor = buttonG.backgroundColor!
+
+            preferences.animating.dismissTransform = CGAffineTransform(translationX: 0, y: -15)
+            preferences.animating.showInitialTransform = CGAffineTransform(translationX: 0, y: 15)
+            preferences.animating.showInitialAlpha = 0
+            preferences.animating.showDuration = 1
+            preferences.animating.dismissDuration = 1
+            preferences.drawing.arrowPosition = .bottom
+            
+            preferences.positioning.contentInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+
+            let contentView = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 82))
+            contentView.image = UIImage(named: "easytipview")
+            EasyTipView.show(forView: self.buttonG,
+                             contentView: contentView,
+                             preferences: preferences)
+
         default:
             
             var preferences = EasyTipView.globalPreferences
